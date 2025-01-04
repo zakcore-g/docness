@@ -1,0 +1,22 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-doc {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 700; /* font-bold */
+  background-color: #fb923c; /* bg-orange-400 */
+  color: #475569; /* text-slate-600 */
+  padding-left: 0.5rem; /* px-2 */
+  padding-right: 0.5rem;
+}
+
+.logo-net {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fb923c;
+  background-color: #475569;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+} 

@@ -1,22 +1,15 @@
-"use client";
+"use client"
 
-import { UserButton } from "@clerk/nextjs";
-import { Bell, Search, ChevronRight, Home } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Input } from "@/components/ui/input"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Bell, Search } from "lucide-react"
+import { UserButton } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { HoverSidebar } from "./hoverSidebar"
 
-export function DashboardNavbar({ className }: { className?: string }) {
-  const pathname = usePathname();
-  const breadcrumbs = pathname.split('/').filter(Boolean);
+const DashboardNavbar = ({className}: {className?: string}) => {
+
 
   return (
     <TooltipProvider>
@@ -25,32 +18,12 @@ export function DashboardNavbar({ className }: { className?: string }) {
         className
       )}>
         <div className="h-full flex items-center justify-between">
-          {/* Left Section: Breadcrumbs */}
-          <div className="flex items-center">
-            <div className="flex items-center gap-1 text-sm text-[#999165]">
-              <Link 
-                href="/dashboard" 
-                className="hover:text-[#999165]/80 w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-              >
-                <Home className="h-4 w-4" />
-              </Link>
-              {breadcrumbs.map((crumb, index) => (
-                <div key={crumb} className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mx-0.5 text-[#999165]/50" />
-                  <Link 
-                    href={`/${breadcrumbs.slice(0, index + 1).join('/')}`}
-                    className={cn(
-                      "hover:text-[#999165]/80 capitalize px-2 py-1 rounded-md transition-colors",
-                      index === breadcrumbs.length - 1 && "font-medium"
-                    )}
-                  >
-                    {crumb.replace(/-/g, ' ')}
-                  </Link>
-                </div>
-              ))}
-            </div>
+          {/* Left Section: HoverSidebar & breadcrumbs */}
+          <div className="flex items-center gap-2">
+            <HoverSidebar />
+            {/* Breadcrumbs */}
+            
           </div>
-
           {/* Right Section: Search & Actions */}
           <div className="flex items-center gap-2">
             {/* Compact Search */}
@@ -81,7 +54,6 @@ export function DashboardNavbar({ className }: { className?: string }) {
 
             <div className="ml-2">
               <UserButton 
-                afterSignOutUrl="/"
                 appearance={{
                   elements: {
                     avatarBox: "h-8 w-8",
@@ -95,5 +67,6 @@ export function DashboardNavbar({ className }: { className?: string }) {
         </div>
       </div>
     </TooltipProvider>
-  );
+  )
 }
+export default DashboardNavbar

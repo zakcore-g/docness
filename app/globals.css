@@ -9,10 +9,26 @@
   }
 }
 
-@layer components {
-  .dropdown-menu-content {
-    animation: none !important;
-    transform: none !important;
-    transition: none !important;
-  }
+/* Logo styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-doc {
+  font-size: 1.25rem;
+  font-weight: 700;
+  background-color: #fb923c;
+  color: #475569;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.logo-net {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fb923c;
+  background-color: #475569;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 } 
