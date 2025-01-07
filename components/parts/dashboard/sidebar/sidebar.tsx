@@ -1,8 +1,12 @@
 "use client"
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import React from "react"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@/components/ui/collapsible"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
 import {
   Sidebar,
   SidebarContent,
@@ -37,6 +41,9 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import NewDocButton from "../newDocButton"
+import { useRecentActivities } from "@/hooks/useRecentActivities"
+import { useUser } from "@clerk/nextjs"
+
 
 // Separate dashboard item for header
 export const dashboardItem = {
@@ -77,7 +84,7 @@ export const menuItems = [
       {
         label: 'Shared Documents',
         icon: Share2,
-        href: '/dashboard/documents/shared',
+        href: '/dashboard/documents/',
         color: "text-black"
       }
     ]
@@ -146,42 +153,10 @@ export const bottomMenuItems = [
   }
 ]
 
-// Mock recent activities
-export const recentActivities = [
-  {
-    title: "Sales Report Q4 2023",
-    action: "Edited by John Doe",
-    timestamp: "2 hours ago"
-  },
-  {
-    title: "Marketing Strategy 2024",
-    action: "Commented by Sarah Smith",
-    timestamp: "3 hours ago"
-  },
-  {
-    title: "Product Roadmap",
-    action: "Shared by Mike Johnson",
-    timestamp: "5 hours ago"
-  },
-  {
-    title: "Budget Planning",
-    action: "Created by Finance Team",
-    timestamp: "1 day ago"
-  },
-  {
-    title: "Team Meeting Notes",
-    action: "Updated by Alice Brown",
-    timestamp: "1 day ago"
-  },
-  {
-    title: "Client Presentation",
-    action: "Reviewed by Management",
-    timestamp: "2 days ago"
-  },
-  // Add more items to demonstrate scrolling
-]
-
 const DashboardSidebar = () => {
+  const { isSignedIn, user } = useUser();
+  const userId = isSignedIn ? user?.id : null
+  const { activities, loading, error } = useRecentActivities(userId);
   return (
     <Sidebar variant="sidebar" collapsible="offcanvas" className="border-r border-black/10 bg-white">
       <SidebarHeader className="border-b border-black/20 pb-3.5">
@@ -252,30 +227,72 @@ const DashboardSidebar = () => {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2 text-black">
+          <SidebarGroupLabel className="text-black flex items-center gap-2">
             <Clock className="h-4 w-4" />
             Recent Activity
+            {activities?.length > 0 && (
+              <span className="ml-auto text-xs bg-black/5 px-2 py-0.5 rounded-full">
+                {activities.length}
+              </span>
+            )}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <ScrollArea className="h-[200px] w-full rounded-md">
-              <div className="px-1">
-                {recentActivities.map((activity, index) => (
-                  <div key={index} className="mb-4">
-                    <div className="text-sm font-medium text-black">
-                      {activity.title}
-                    </div>
-                    <div className="text-xs text-black/70">
-                      {activity.action}
-                    </div>
-                    <div className="text-xs text-black/50">
-                      {activity.timestamp}
-                    </div>
-                    {index < recentActivities.length - 1 && (
-                      <Separator className="my-2 bg-black/10" />
-                    )}
+            <ScrollArea className="h-[300px] w-full">
+              {loading ? (
+                <div className="flex items-center justify-center h-20 text-sm text-black/70">
+                  <div className="animate-pulse flex flex-col items-center gap-2">
+                    <Clock className="h-4 w-4 animate-spin" />
+                    <span>Loading activities...</span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ) : error ? (
+                <div className="flex items-center justify-center h-20 text-sm text-red-500 p-4">
+                  <div className="flex flex-col items-center gap-2">
+                    <span>Error loading activities</span>
+                    <span className="text-xs text-red-400">{error.message}</span>
+                  </div>
+                </div>
+              ) : !activities || activities.length === 0 ? (
+                <div className="flex items-center justify-center h-20 text-sm text-black/70">
+                  <div className="flex flex-col items-center gap-2">
+                    <Clock className="h-4 w-4 opacity-50" />
+                    <span>No recent activities</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-1 p-1">
+                  {activities.map((activity, i) => (
+                    <div key={activity.id || i} className="relative group">
+                      <a 
+                        href={activity.documentUrl}
+                        className="block rounded-md transition-all duration-200 hover:bg-[#faf7ff] hover:shadow-sm"
+                      >
+                        <div className="p-3 space-y-2">
+                          <div className="flex items-start justify-between">
+                            <h4 className="text-sm font-medium leading-none group-hover:text-purple-600 transition-colors">
+                              {activity.title}
+                            </h4>
+                            <span className="text-xs text-black/50 whitespace-nowrap ml-2">
+                              {activity.timestamp}
+                            </span>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-sm font-medium text-black/80">
+                              {activity.documentTitle}
+                            </p>
+                            <p className="text-xs text-black/60">
+                              {activity.action}
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      {i < activities.length - 1 && (
+                        <div className="absolute bottom-0 left-3 right-3 h-px bg-black/5" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </ScrollArea>
           </SidebarGroupContent>
         </SidebarGroup>

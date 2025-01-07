@@ -74,7 +74,7 @@ export default function Document({ params }: { params: Promise<{ id: string }> }
           placeholder="Document Title"
           className="flex-grow"
         />
-        <Button type="submit">Update Title</Button>
+        <Button type="submit" className="bg-black hover:bg-black/90 text-white">Update Title</Button>
       </form>
     </div>
   );
