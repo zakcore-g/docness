@@ -16,8 +16,8 @@ import { cn } from "@/lib/utils"
 
 // Type definition for menu items
 type MenuItem = {
-  name: string;  // Display name of the menu item
-  href: string;  // URL path for the menu item
+  name: string;
+  href: string;
 }
 
 // Navigation menu structure with nested routes
@@ -47,9 +47,9 @@ const menuItems = {
 
 // Common styles used throughout the navbar
 const styles = {
-  menuItem: "text-[#999165] hover:bg-[#999165]/10 px-4 py-2.5 text-sm",
-  button: "bg-orange-400 hover:bg-orange-300",
-  container: "bg-white/95 backdrop-blur-sm border border-[#999165]/20"
+  menuItem: "text-black hover:bg-[#faf7ff] px-4 py-2.5 text-sm",
+  button: "bg-black hover:bg-black/90 text-white",
+  container: "bg-white/95 backdrop-blur-sm border border-black/20"
 }
 
 const LoginButton = ({ className = "" }) => (
@@ -64,18 +64,12 @@ const LoginButton = ({ className = "" }) => (
   </div>
 );
 
-/**
- * A component that renders a link to the dashboard when the user is signed in.
- *
- * @param className - The class name to apply to the link element.
- * @returns The link to the dashboard.
- */
 const DashboardLink = ({ className = "" }: { className?: string }) => (
   <SignedIn>
     <Link
       href="/dashboard"
       className={cn(
-        "flex items-center gap-2 rounded-md px-4 py-2 font-medium bg-orange-400 hover:bg-orange-300 border border-orange-400",
+        "flex items-center gap-2 rounded-md px-4 py-2 font-medium bg-black hover:bg-black/90 text-white border border-black",
         className
       )}
     >
@@ -91,7 +85,7 @@ const DashboardLink = ({ className = "" }: { className?: string }) => (
 const NavDropdown = ({ trigger, items }: { trigger: string; items: MenuItem[] }) => (
   <HoverCard>
     <HoverCardTrigger asChild>
-      <div className="text-[#999165] hover:text-[#999165]/80 cursor-pointer font-medium">
+      <div className="text-black hover:text-black/80 cursor-pointer font-medium">
         {trigger}
       </div>
     </HoverCardTrigger>
@@ -107,19 +101,17 @@ const NavDropdown = ({ trigger, items }: { trigger: string; items: MenuItem[] })
   </HoverCard>
 )
 
-// Mobile sidebar component that appears on smaller screens
+// Mobile sidebar component
 const MobileSidebar = () => (
-  <>
   <Sheet>
     <SheetTrigger asChild>
-      <MenuIcon className="h-6 w-6 text-[#999165] hover:text-[#999165]/80 md:hidden" />
+      <MenuIcon className="h-6 w-6 text-black hover:text-black/80 md:hidden" />
     </SheetTrigger>
     <SheetContent side="right" className="w-72 bg-white p-0">
       <header className="flex items-center justify-between p-4">
         <Logo />
       </header>
       <nav className="flex flex-col gap-4 p-4">
-        {/* Map through menu items to create mobile dropdown menus */}
         {Object.entries(menuItems).map(([trigger, items]) => (
           <DropdownMenu key={trigger}>
             <DropdownMenuTrigger className={`w-full text-left ${styles.menuItem}`}>
@@ -139,13 +131,11 @@ const MobileSidebar = () => (
       <DashboardLink className="w-full px-4 py-2.5" />
     </SheetContent>
   </Sheet>
-  </>
-  
 )
 
-// Main navbar component that combines all the above components
+// Main navbar component
 const HomeNavbar = () => (
-  <nav className="w-full border-b shadow-sm">
+  <nav className="w-full border-b border-black/10 shadow-sm bg-white">
     <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <Logo />
       {/* Desktop navigation menu - hidden on mobile */}
@@ -158,7 +148,15 @@ const HomeNavbar = () => (
       <div className="flex items-center gap-4">
         <LoginButton className="hidden md:flex" />
         <SignedIn>
-          <UserButton appearance={{ elements: { avatarBox: "h-8 w-8 md:h-10 md:w-10" }}} />
+          <UserButton 
+            appearance={{ 
+              elements: { 
+                avatarBox: "h-8 w-8 md:h-10 md:w-10",
+                userButtonPopoverCard: "bg-white border border-black/10",
+                userButtonPopoverActionButton: "text-black hover:bg-[#faf7ff]",
+              }
+            }} 
+          />
         </SignedIn>
         <DashboardLink className="hidden md:flex" />
         <MobileSidebar />

@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if the user owns the document
+    function isOwner(email) {
+      return request.auth.token.email == email;
+    }
+
+    // Documents collection
+    match /documents/{documentId} {
+      allow read: if isAuthenticated() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.token.email)/rooms/$(documentId));
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.token.email)/rooms/$(documentId));
+    }
+
+    // Users collection
+    match /users/{userEmail} {
+      allow read: if isAuthenticated() && isOwner(userEmail);
+      
+      // Rooms subcollection
+      match /rooms/{roomId} {
+        allow read: if isAuthenticated() && isOwner(userEmail);
+        allow write: if isAuthenticated() && isOwner(userEmail);
+      }
+
+      // Activities subcollection
+      match /activities/{activityId} {
+        allow read: if isAuthenticated() && isOwner(userEmail);
+        allow write: if isAuthenticated() && isOwner(userEmail);
+      }
+    }
+  }
+}

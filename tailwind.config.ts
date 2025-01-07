@@ -17,7 +17,36 @@ const config = {
                 "2xl": "1400px",
             },
         },
-        extend: {},
+        extend: {
+            colors: {
+                primary: {
+                    DEFAULT: "#fcca00",
+                    foreground: "#000000",
+                },
+                secondary: {
+                    DEFAULT: "#ffefca",
+                    foreground: "#000000",
+                },
+                muted: {
+                    DEFAULT: "#919191",
+                    foreground: "#ffffff",
+                },
+                accent: {
+                    DEFAULT: "#FFFFFF",
+                    foreground: "#000000",
+                },
+                sidebar: {
+                    background: "hsl(var(--sidebar-background))",
+                    foreground: "hsl(var(--sidebar-foreground))",
+                    primary: "hsl(var(--sidebar-primary))",
+                    "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+                    accent: "hsl(var(--sidebar-accent))",
+                    "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+                    border: "hsl(var(--sidebar-border))",
+                    ring: "hsl(var(--sidebar-ring))",
+                },
+            },
+        },
     },
     plugins: [],
 } satisfies Config;

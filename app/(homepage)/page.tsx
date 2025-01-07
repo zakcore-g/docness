@@ -1,9 +1,7 @@
-import HomeNavbar from "@/components/parts/homepage/navbar"
-
 const HomePage = () => {
   return (
     <div>
-        <HomeNavbar />
+        <h1>Home Page</h1>
     </div>
   )
 }

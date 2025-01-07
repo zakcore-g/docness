@@ -4,8 +4,47 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base Colors */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 0 0% 0%; /* #000000 */
+
+    /* Sidebar Colors */
+    --sidebar-background: 0 0% 0%; /* Black background */
+    --sidebar-foreground: 270 100% 98%; /* #faf7ff text */
+    --sidebar-primary: 270 100% 98%; /* #faf7ff */
+    --sidebar-primary-foreground: 0 0% 0%; /* Black text on primary */
+    --sidebar-accent: 0 0% 100%; /* White */
+    --sidebar-accent-foreground: 0 0% 0%; /* Black text on accent */
+    --sidebar-muted: 0 0% 100%; /* White */
+    --sidebar-muted-foreground: 0 0% 0%; /* Black text on muted */
+    --sidebar-border: 270 100% 98%; /* #faf7ff */
+    --sidebar-ring: 270 100% 98%; /* #faf7ff */
+  }
+ 
+  .dark {
+    --sidebar-background: 270 100% 98%; /* #faf7ff background */
+    --sidebar-foreground: 0 0% 0%; /* Black text */
+    --sidebar-primary: 0 0% 0%; /* Black */
+    --sidebar-primary-foreground: 270 100% 98%; /* #faf7ff text on primary */
+    --sidebar-accent: 0 0% 0%; /* Black */
+    --sidebar-accent-foreground: 270 100% 98%; /* #faf7ff text on accent */
+    --sidebar-muted: 0 0% 0%; /* Black */
+    --sidebar-muted-foreground: 270 100% 98%; /* #faf7ff text on muted */
+    --sidebar-border: 0 0% 0%; /* Black */
+    --sidebar-ring: 0 0% 0%; /* Black */
+  }
+}
+
+/* Utility classes for gradients */
+@layer utilities {
+  .bg-gradient-custom {
+    background: linear-gradient(to right, #000000, #faf7ff);
+  }
+  
+  .text-gradient-custom {
+    background: linear-gradient(to right, #000000, #faf7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
@@ -18,8 +57,8 @@
 .logo-doc {
   font-size: 1.25rem;
   font-weight: 700;
-  background-color: #fb923c;
-  color: #475569;
+  background-color: #000000;
+  color: #faf7ff;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
@@ -27,8 +66,8 @@
 .logo-net {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #fb923c;
-  background-color: #475569;
+  color: #000000;
+  background-color: #faf7ff;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 } 

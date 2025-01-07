@@ -11,13 +11,13 @@ export function CustomSidebarTrigger({ className }: { className?: string }) {
     <Button
       variant="ghost"
       size="icon"
-      className={`h-8 w-8 hover:bg-[#999165]/10 rounded-lg ${className}`}
+      className={`h-8 w-8 hover:bg-[#faf7ff] rounded-lg ${className}`}
       onClick={toggleSidebar}
     >
       {state === "expanded" ? (
-        <ChevronsLeft className="h-4 w-4 text-[#999165]" />
+        <ChevronsLeft className="h-4 w-4 text-black" />
       ) : (
-        <ChevronsRight className="h-4 w-4 text-[#999165]" />
+        <ChevronsRight className="h-4 w-4 text-black" />
       )}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>

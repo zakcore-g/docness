@@ -34,31 +34,31 @@ import {
   Trash,
   FolderKanban,
   FolderPlus,
-  FilePlus
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import NewDocButton from "../newDocButton"
 
 // Separate dashboard item for header
 export const dashboardItem = {
   label: 'Dashboard',
   icon: LayoutDashboard,
   href: '/dashboard',
-  color: "text-[#999165]"
+  color: "text-black"
 }
 
-// Rest of the menu items (without Settings)
+// Rest of the menu items
 export const menuItems = [
   {
     label: 'Projects',
     icon: FolderKanban,
     href: '/dashboard/projects',
-    color: "text-[#999165]",
+    color: "text-black",
     subRoutes: [
       {
         label: 'Project 1',
         icon: FileText,
         href: '/dashboard/projects/1',
-        color: "text-[#999165]"
+        color: "text-black"
       }
     ]
   },
@@ -66,19 +66,19 @@ export const menuItems = [
     label: 'Documents',
     icon: FileText,
     href: '/dashboard/documents',
-    color: "text-[#999165]",
+    color: "text-black",
     subRoutes: [
       {
         label: 'Personal Documents',
         icon: UserCircle,
         href: '/dashboard/documents/personal',
-        color: "text-[#999165]"
+        color: "text-black"
       },
       {
         label: 'Shared Documents',
         icon: Share2,
         href: '/dashboard/documents/shared',
-        color: "text-[#999165]"
+        color: "text-black"
       }
     ]
   },
@@ -86,19 +86,19 @@ export const menuItems = [
     label: 'Collaboration',
     icon: Users,
     href: '/dashboard/collaboration',
-    color: "text-[#999165]",
+    color: "text-black",
     subRoutes: [
       {
         label: 'Team Access',
         icon: Shield,
         href: '/dashboard/collaboration/team-access',
-        color: "text-[#999165]"
+        color: "text-black"
       },
       {
         label: 'Version History',
         icon: History,
         href: '/dashboard/collaboration/history',
-        color: "text-[#999165]"
+        color: "text-black"
       }
     ]
   },
@@ -106,24 +106,45 @@ export const menuItems = [
     label: 'Document Library',
     icon: FolderOpen,
     href: '/dashboard/library',
-    color: "text-[#999165]",
+    color: "text-black",
     subRoutes: [
       {
         label: 'Templates',
         icon: FileText,
         href: '/dashboard/library/templates',
-        color: "text-[#999165]"
+        color: "text-black"
       },
       {
         label: 'Access Control',
         icon: Lock,
         href: '/dashboard/library/access',
-        color: "text-[#999165]"
+        color: "text-black"
       }
     ]
   },
 ]
 
+// Bottom menu items
+export const bottomMenuItems = [
+  {
+    label: 'Settings',
+    icon: Settings,
+    href: '/dashboard/settings',
+    color: "text-black"
+  },
+  {
+    label: 'Trash',
+    icon: Trash,
+    href: '/dashboard/trash',
+    color: "text-black"
+  },
+  {
+    label: 'Help',
+    icon: HelpCircle,
+    href: '/dashboard/help',
+    color: "text-black"
+  }
+]
 
 // Mock recent activities
 export const recentActivities = [
@@ -160,32 +181,10 @@ export const recentActivities = [
   // Add more items to demonstrate scrolling
 ]
 
-// Bottom menu items
-export const bottomMenuItems = [
-  {
-    label: 'Settings',
-    icon: Settings,
-    href: '/dashboard/settings',
-    color: "text-[#999165]"
-  },
-  {
-    label: 'Trash',
-    icon: Trash,
-    href: '/dashboard/trash',
-    color: "text-[#999165]"
-  },
-  {
-    label: 'Help',
-    icon: HelpCircle,
-    href: '/dashboard/help',
-    color: "text-[#999165]"
-  }
-]
-
 const DashboardSidebar = () => {
   return (
-    <Sidebar variant="sidebar" collapsible="offcanvas">
-      <SidebarHeader className="border-b border-[#999165]/20 pb-3.5">
+    <Sidebar variant="sidebar" collapsible="offcanvas" className="border-r border-black/10 bg-white">
+      <SidebarHeader className="border-b border-black/20 pb-3.5">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
@@ -200,22 +199,16 @@ const DashboardSidebar = () => {
       <SidebarContent className="pt-4">
         <div className="mb-4 space-y-2 px-2">
           <Button 
-            className="w-full justify-start gap-2 bg-[#999165] text-white hover:bg-[#999165]/90"
+            className="w-full justify-start gap-2 bg-black text-white hover:bg-black/90"
           >
             <FolderPlus className="h-4 w-4" />
             New Project
           </Button>
-          <Button 
-            variant="outline" 
-            className="w-full justify-start gap-2 border-[#999165] text-[#999165] hover:bg-[#999165]/10"
-          >
-            <FilePlus className="h-4 w-4" />
-            New Document
-          </Button>
+          <NewDocButton />
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-black">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -259,7 +252,7 @@ const DashboardSidebar = () => {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2">
+          <SidebarGroupLabel className="flex items-center gap-2 text-black">
             <Clock className="h-4 w-4" />
             Recent Activity
           </SidebarGroupLabel>
@@ -268,17 +261,17 @@ const DashboardSidebar = () => {
               <div className="px-1">
                 {recentActivities.map((activity, index) => (
                   <div key={index} className="mb-4">
-                    <div className="text-sm font-medium text-[#999165]">
+                    <div className="text-sm font-medium text-black">
                       {activity.title}
                     </div>
-                    <div className="text-xs text-[#999165]/70">
+                    <div className="text-xs text-black/70">
                       {activity.action}
                     </div>
-                    <div className="text-xs text-[#999165]/50">
+                    <div className="text-xs text-black/50">
                       {activity.timestamp}
                     </div>
                     {index < recentActivities.length - 1 && (
-                      <Separator className="my-2 bg-[#999165]/10" />
+                      <Separator className="my-2 bg-black/10" />
                     )}
                   </div>
                 ))}
