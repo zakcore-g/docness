@@ -1,11 +1,12 @@
 import HomeNavbar from "@/components/parts/homepage/navbar"
 
+
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+      <div>
         <HomeNavbar />
         {children}
-    </div>
+      </div>
   )
 }
 export default HomeLayout

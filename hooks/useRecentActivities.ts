@@ -1,6 +1,6 @@
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db } from "@/firebase";
-import { collection, query, orderBy, limit, where, Timestamp } from "firebase/firestore";
+import { collection, query, orderBy, limit, where} from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
 
 // This interface defines the structure for a RecentActivity object
@@ -50,13 +50,33 @@ export const useRecentActivities = (userId: string | null, limitCount: number = 
   // Create an array of formatted activities from the query results.
   const formattedActivities = activities?.docs?.map(doc => {
     const data = doc.data();
+    const timestamp = data.timestamp?.toDate() || new Date();
+
+    // Format the activity title based on type
+    const activityTitles: Record<string, string> = {
+      create: 'Created Document',
+      edit: 'Updated Document',
+      delete: 'Deleted Document',
+      share: 'Shared Document',
+      comment: 'Commented on Document'
+    };
+
+    // Format the activity action based on type
+    const activityActions: Record<string, string> = {
+      create: 'Created a new document',
+      edit: 'Made changes to',
+      delete: 'Removed',
+      share: 'Shared',
+      comment: 'Commented on'
+    };
+
     return {
       id: doc.id,
-      title: `${data.type.charAt(0).toUpperCase() + data.type.slice(1)} Document`,
-      action: data.action || 'Updated',
-      timestamp: formatDistanceToNow(new Date(data.timestamp.seconds * 1000), { addSuffix: true }),
+      title: activityTitles[data.type] || 'Document Activity',
+      action: `${activityActions[data.type]} ${data.documentTitle || 'Untitled Document'}`,
+      timestamp: formatDistanceToNow(timestamp, { addSuffix: true }),
       documentId: data.documentId,
-      documentTitle: data.title || 'Untitled Document',
+      documentTitle: data.documentTitle || 'Untitled Document',
       documentUrl: `/dashboard/documents/${data.documentId}`
     };
   }) || [];

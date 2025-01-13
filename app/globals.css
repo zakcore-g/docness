@@ -70,4 +70,44 @@
   background-color: #faf7ff;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+}
+
+/* Add these styles to your existing globals.css */
+.editor-container {
+  position: relative;
+  background: white;
+  min-height: 400px;
+  padding: 1rem;
+}
+
+.editor-input {
+  min-height: 350px;
+  resize: none;
+  font-size: 15px;
+  caret-color: rgb(5, 5, 5);
+  position: relative;
+  tab-size: 1;
+  outline: 0;
+  padding: 15px 10px;
+  caret-color: #444;
+}
+
+.editor-placeholder {
+  color: #999;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 15px;
+  left: 10px;
+  font-size: 15px;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+}
+
+.floating-composer {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
 } 

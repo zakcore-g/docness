@@ -1,96 +1,58 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { db } from "@/firebase";
-import { doc, deleteDoc } from "firebase/firestore";
 import Link from "next/link";
-import { useDocumentData } from "react-firebase-hooks/firestore";
-import { Trash2, FileText, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { FileText, Clock } from "lucide-react";
+import DocumentOptions from "./DocumentOptions";
 
 interface DocCardProps {
   id: string;
   href: string;
-  onDelete?: () => void;
+  userEmail: string;
+  title: string;
+  createdAt: string;
+  role?: string;
+  access?: Record<string, string>;
 }
 
-const DocCard = ({ id, href, onDelete }: DocCardProps) => {
-  const [data, loading] = useDocumentData(
-    doc(db, "documents", id)
-  );
-
-  if (loading || !data) return null;
-
-  const handleDelete = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation
-    if (window.confirm("Are you sure you want to delete this document?")) {
-      try {
-        await deleteDoc(doc(db, "documents", id));
-        onDelete?.();
-      } catch (error) {
-        console.error("Error deleting document:", error);
-      }
-    }
-  };
-
-  const formattedDate = new Date(data.createdAt?.toDate()).toLocaleDateString(undefined, {
+const DocCard = ({ id, href, userEmail, title, createdAt, role, access }: DocCardProps) => {
+  const formattedDate = new Date(createdAt).toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
   });
 
+  const userRole = role || access?.[userEmail] || 'viewer';
+
   return (
-    <Link href={href}>
-      <Card className="group hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-        <CardHeader className="p-4">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-5 w-5 text-blue-500" />
-              <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-1">
-                {data.title || "Untitled Document"}
+    <Card className="group hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 backdrop-blur-sm">
+      <CardHeader className="p-4">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <FileText className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+            </div>
+            <Link href={href}>
+              <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-1 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
+                {title || "Untitled Document"}
               </CardTitle>
-            </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={handleDelete}
-                  >
-                    <Trash2 className="h-4 w-4 text-red-500 hover:text-red-600" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete document</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            </Link>
           </div>
-        </CardHeader>
-        <CardContent className="p-4 pt-0">
-          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-4">
-            <div className="flex items-center space-x-1">
-              <Clock className="h-4 w-4" />
-              <span>{formattedDate}</span>
-            </div>
-            <div className="flex-1 truncate">
-              <span className="text-gray-600 dark:text-gray-300">{data.createdBy}</span>
-              {data.createdBy !== data.createdByEmail && (
-                <span className="text-xs text-gray-400 ml-1">({data.createdByEmail})</span>
-              )}
-            </div>
+          <DocumentOptions userEmail={userEmail} docId={id} />
+        </div>
+      </CardHeader>
+      <CardContent className="p-4 pt-0">
+        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-4">
+          <div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 dark:bg-gray-700/30 rounded-full">
+            <Clock className="h-4 w-4" />
+            <span>{formattedDate}</span>
           </div>
-        </CardContent>
-      </Card>
-    </Link>
+          <div className="px-2 py-1 bg-gray-100 dark:bg-gray-700/30 rounded-full capitalize">
+            {userRole}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

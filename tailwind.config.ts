@@ -20,11 +20,11 @@ const config = {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: "#fcca00",
+                    DEFAULT: "#FFFFFF",
                     foreground: "#000000",
                 },
                 secondary: {
-                    DEFAULT: "#ffefca",
+                    DEFAULT: "#faf7ff",
                     foreground: "#000000",
                 },
                 muted: {

@@ -4,7 +4,19 @@ import { auth } from "@clerk/nextjs/server";
 
 type ActivityType = 'create' | 'edit' | 'delete' | 'share' | 'comment';
 
-export async function POST(req: Request) {
+interface TrackActivityRequest {
+    userEmail: string;
+    documentId: string;
+    documentTitle: string;
+    activityType: ActivityType;
+}
+
+/**
+ * Handles tracking of user activity.
+ * @param req - The incoming request object.
+ * @returns A Promise that resolves to a NextResponse object indicating the result of the operation.
+ */
+export async function POST(req: Request): Promise<NextResponse> {
     try {
         console.log("Track activity: Starting request");
         const session = await auth();
@@ -14,12 +26,7 @@ export async function POST(req: Request) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        const { userEmail, documentId, documentTitle, activityType }: {
-            userEmail: string;
-            documentId: string;
-            documentTitle: string;
-            activityType: ActivityType;
-        } = await req.json();
+        const { userEmail, documentId, documentTitle, activityType }: TrackActivityRequest = await req.json();
 
         console.log("Track activity: Received request", {
             userEmail,
@@ -30,7 +37,7 @@ export async function POST(req: Request) {
         });
 
         if (!userEmail || !documentId || !documentTitle || !activityType) {
-            const missingFields = [];
+            const missingFields: string[] = [];
             if (!userEmail) missingFields.push('userEmail');
             if (!documentId) missingFields.push('documentId');
             if (!documentTitle) missingFields.push('documentTitle');
@@ -40,7 +47,7 @@ export async function POST(req: Request) {
             return new NextResponse(`Missing required fields: ${missingFields.join(', ')}`, { status: 400 });
         }
 
-        const activityText = {
+        const activityText: Record<ActivityType, string> = {
             create: 'Created',
             edit: 'Edited',
             delete: 'Deleted',

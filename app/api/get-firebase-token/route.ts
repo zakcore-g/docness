@@ -2,10 +2,15 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { adminAuth } from "@/firebase-admin";
 
-export async function GET() {
+/**
+ * Handles the GET request to obtain a Firebase token for the authenticated user.
+ * 
+ * @returns {Promise<NextResponse>} - JSON response containing the Firebase token.
+ */
+export async function GET(): Promise<NextResponse> {
     try {
         console.log("Attempting to get Clerk auth...");
-        const { userId } = await auth();
+        const { userId }: { userId: string | null } = await auth();
         console.log("Got userId from Clerk:", userId);
 
         if (!userId) {
@@ -14,7 +19,7 @@ export async function GET() {
         }
 
         console.log("Creating Firebase custom token...");
-        const token = await adminAuth.createCustomToken(userId);
+        const token: string = await adminAuth.createCustomToken(userId);
         console.log("Created Firebase token for user:", userId);
         
         return NextResponse.json({ token });
